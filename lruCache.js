@@ -73,9 +73,9 @@ class LRUCache {
   del(key) {
     if (this.cache[key]) {
       this.list.removeNode(this.cache[key]);
+      delete this.cache[key];
+      this.cacheSize-=1;
     }
-    delete this.cache[key];
-    this.cacheSize-=1;
   }
 
   reset() {
@@ -86,15 +86,18 @@ class LRUCache {
 }
 
 // small test
-const LRUCache = require('lruCache.js');
 
+console.log('========================================= INIT CACHE SIZE 3');
 let lruCacheTest = new LRUCache({ size: 3 });
+console.log('========================================= INPUT 3 CACHE 100, cache001, cache002');
 lruCacheTest.put(100, { name: 'chenlei' });
 lruCacheTest.put('cache001', 1001);
 lruCacheTest.put('cache002', '123456789');
 
+console.log('========================================= TEST 1 GET cache001');
 console.log(lruCacheTest.get('cache001'));
 
+console.log('========================================= TEST 2 PUT CACHE 4 1000 AND GET cache001');
 lruCacheTest.put(1000, {});
 
 try {
@@ -102,3 +105,20 @@ try {
 } catch (err) {
     console.log(err.message);
 }
+
+console.log('========================================= TEST 3 DEL cache001 AND GET cache001');
+lruCacheTest.del('cache001');
+
+try {
+    lruCacheTest.get('cache001');
+} catch (err) {
+    console.log(err.message);
+}
+
+console.log('========================================= TEST 4 DEL keydne');
+lruCacheTest.del('keydne');
+
+console.log('========================================= TEST 5 RESET AND GET size');
+lruCacheTest.reset();
+console.log('cacheSize', lruCacheTest.cacheSize);
+console.log('cache', lruCacheTest.cache);
