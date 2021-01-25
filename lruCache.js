@@ -47,6 +47,7 @@ class LRUCache {
     const newNode = new Node(key, value);
     if (this.cache[key]) {
       this.list.removeNode(this.cache[key]);
+      this.cacheSize-=1;
     } else if (this.cacheSize >= this.size) {
       const key = this.list.removeTail();
       delete this.cache[key];
